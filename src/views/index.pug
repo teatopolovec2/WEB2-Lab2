@@ -1,0 +1,49 @@
+html     
+    head 
+        style 
+            include ../public/css/index.css
+        title Sigurnost
+    body 
+        .container
+            h1 Cross-site scripting (XSS) - pohranjeni
+            div Upišite komentar koji će se spremiti u bazu te će odmah zatim biti prikazan i na ovoj stranici. 
+            div Primjer: &lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/640px-Google_2015_logo.svg.png&quot; onload=alert('XSS')&gt;
+            label
+                input(type="checkbox", id="check1")
+            |   Uključena ranjivost
+            form(action="/submitKomentar" method="POST" id="komentarForm")
+                .input-group
+                    label(for="inputField") Unesite komentar:
+                    input(type="text" name="komentar" id="inputField" required maxlength="255")
+                    button(type="submit") Objavi
+            p(class="tekst") KOMENTARI KOJI ĆE BITI PRIKAZANI KORISNIKU:
+            .table-container
+                table(id="komentarTable")
+                    thead
+                        tr
+                        th komentari
+                    tbody(id="tableBody1")
+
+        .container
+            h1 Nesigurna pohrana osjetljivih podataka (Sensitive Data Exposure)
+            div Korisnik unosi broj kreditne kartice te se broj pohranjuje u bazu.
+            label
+                input(type="checkbox" id="check2")
+            |   Uključena ranjivost
+            form(action="/submitKartica" method="POST" id="karticaForm")
+                .input-group
+                    label(for="cardInput") Unesite broj kartice (16 znamenki):
+                    input(type="tel" name="cardNumber" id="cardInput" required maxlength="16" pattern="[0-9]{16}")
+                    button(type="submit") Pošalji
+            div(id="vidljiv")
+                p(class="tekst") ZAPIS POHRANJEN U BAZU:
+                .table-container2
+                    table(id="komentarTable")
+                        thead
+                            tr
+                            th ID
+                            th brojKartice
+                        tbody(id="tableBody2")
+                p(id="desifrirano") 
+        script 
+            include ../public/js/index.js 

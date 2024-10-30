@@ -1,0 +1,107 @@
+body {
+  display: flex;
+  min-height: 100vh;
+  margin: 0;
+  font-family: monospace;
+  background-color: black;
+  flex-direction: column;
+}
+  
+.container {
+  background-color: #8268ff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  color: white;
+  font-size: x-large;
+}
+  
+h1 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+  
+div {
+  color: #181818;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+  
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+input[type="checkbox"]:checked {
+  accent-color: black;
+}
+
+input[type="text"] {
+  margin: 10px 0;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 60%;
+}
+  
+button {
+  background-color: #4800cb;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+  
+button:hover {
+  background-color: #bd99ff;
+  color: black
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#komentarTable {
+  border-collapse: collapse;
+  width: 100%; 
+}
+
+#komentarTable th,
+#komentarTable td {
+  border: 2px solid #333;
+  padding: 8px;
+  text-align: left;
+}
+
+#komentarTable th {
+  background-color: #8cffe6;
+}
+
+.table-container {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+#tableBody{
+  background-color: #f2f2f2;
+}
+
+#cardInput{
+  height: 30px;
+}
+
+#vidljiv{
+  display: none;
+}
+
+#desifrirano{
+  display:none
+}
+
+.tekst{
+  color: white;
+}
