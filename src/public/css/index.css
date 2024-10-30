@@ -81,13 +81,10 @@ button:hover {
   background-color: #8cffe6;
 }
 
-.table-container {
+#tableBody1{
   max-height: 300px;
   overflow-y: auto;
-}
-
-#tableBody{
-  background-color: #f2f2f2;
+  display: block;
 }
 
 #cardInput{
