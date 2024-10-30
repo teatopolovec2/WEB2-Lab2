@@ -15,6 +15,7 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
             if (response.ok) {
                 console.log('Komentar uspješno poslan');
                 const komentar = await response.json();
+                document.getElementById('komentarForm').reset();
                 prikaziKomentar(komentar);
             } else {
                 const errorData = await response.json();
@@ -36,6 +37,7 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
             if (response.ok) {
                 console.log('Komentar uspješno poslan');
                 const komentar = await response.json();
+                document.getElementById('komentarForm').reset();
                 prikaziKomentar(komentar);
             } else {
                 const errorData = await response.json();
