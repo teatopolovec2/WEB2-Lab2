@@ -6,8 +6,9 @@ html
     body 
         .container
             h1 Cross-site scripting (XSS) - pohranjeni
-            div Upišite komentar koji će se spremiti u bazu te će odmah zatim biti prikazan i na ovoj stranici. 
-            div Primjer: &lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/640px-Google_2015_logo.svg.png&quot; onload=alert('XSS')&gt;
+            div Dobrodošli na forum! Upišite komentar koji će se spremiti u bazu te će zatim biti prikazan i na ovoj stranici. 
+            div Primjer komentara koji može iskoristiti ranjivost: 
+                div &lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/640px-Google_2015_logo.svg.png&quot; onload=alert(document.cookie)&gt;
             label
                 input(type="checkbox", id="check1")
             |   Uključena ranjivost
@@ -16,12 +17,12 @@ html
                     label(for="inputField") Unesite komentar:
                     input(type="text" name="komentar" id="inputField" required maxlength="255")
                     button(type="submit") Objavi
-            p(class="tekst") KOMENTARI KOJI ĆE BITI PRIKAZANI KORISNIKU:
+            p(class="tekst") PRIKAZ KOMENTARA KORISNICIMA KADA POSJETE FORUM:
             .table-container
                 table(id="komentarTable")
                     thead
                         tr
-                        th komentari
+                        th Objavljeni komentari
                     tbody(id="tableBody1")
 
         .container
