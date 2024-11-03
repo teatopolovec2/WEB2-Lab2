@@ -58,7 +58,7 @@ const createKey = (): string => {
 const key = createKey();
 app.post('/submitKarticaIsklj', async function (req, res) {    
     try {
-        if(req.body.kartica.length < 16) res.status(400).json({ error:('Broj kartice mora imati 16 znamenki.')});
+        if(req.body.kartica.length != 16) res.status(400).json({ error:('Broj kartice mora imati 16 znamenki.')});
         const sha256 = crypto.createHash('sha256');
         sha256.update(key);
         const iv = crypto.randomBytes(16);
@@ -83,7 +83,7 @@ app.post('/submitKarticaIsklj', async function (req, res) {
 
 app.post('/submitKartica', async function (req, res) {    
     try {
-        if(req.body.kartica.length < 16) res.status(400).json({ error:('Broj kartice mora imati 16 znamenki.')});
+        if(req.body.kartica.length != 16) res.status(400).json({ error:('Broj kartice mora imati 16 znamenki.')});
         const rez = await db.createKartica(req.body.kartica);
         if (rez.rowCount === 1) {
             res.status(200).send(rez.rows[0]);
