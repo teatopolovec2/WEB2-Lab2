@@ -39,7 +39,7 @@ app.post('/submitKomentarIsklj', [body('komentar').trim().escape()], async funct
     try {
         const rez = await db.createKomentar(req.body.komentar);
         if (rez.rowCount === 1) {
-            res.cookie('cookie', '123cookie123', {
+            res.cookie('cookie2', '123cookie123', {
                 secure: true,
                 httpOnly: true,
                 sameSite: 'strict',
