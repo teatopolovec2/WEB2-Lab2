@@ -19,6 +19,11 @@ app.post('/submitKomentar', async function (req, res) {
         if(req.body.komentar.length > 255) res.status(400).json({ error:('Predugačak komentar.')});
         const rez = await db.createKomentar(req.body.komentar);
         if (rez.rowCount === 1) {
+            res.cookie('cookie', '123cookie123', {
+                secure: true,
+                sameSite: 'strict',
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+              });
             res.status(200).send(rez.rows[0]);
         }
     } catch (error) {
@@ -33,7 +38,13 @@ app.post('/submitKomentarIsklj', [body('komentar').trim().escape()], async funct
     } 
     try {
         const rez = await db.createKomentar(req.body.komentar);
-        if (rez.rowCount === 1) {;
+        if (rez.rowCount === 1) {
+            res.cookie('cookie', '123cookie123', {
+                secure: true,
+                httpOnly: true,
+                sameSite: 'strict',
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+              });
             res.status(200).send(rez.rows[0]);
         }
     } catch (error) {
