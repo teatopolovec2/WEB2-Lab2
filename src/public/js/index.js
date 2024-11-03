@@ -119,8 +119,6 @@ function prikaziKomentare(komentari) {
         `;
         tableBody.appendChild(komentarRow);
     });
-    const tableContainer = document.querySelector('.table-container');
-    tableContainer.scrollTop = tableContainer.scrollHeight;
 }
 
 function prikaziKarticu(kartica) {
