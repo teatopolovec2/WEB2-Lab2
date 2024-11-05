@@ -14,12 +14,12 @@ app.set('view engine', 'pug');
 app.get('/',  function (req, res) {
     res.render('index');
 });
-app.post('/submitKomentar', async function (req, res) {    
+app.post('/submitKomentar', async function (req, res) {    //pohrana komentara - uključena ranjivost (unos se ne provjerava)
     try {
         if(req.body.komentar.length > 255) res.status(400).json({ error:('Predugačak komentar.')});
-        const rez = await db.createKomentar(req.body.komentar);
+        const rez = await db.createKomentar(req.body.komentar); //pohrana komentara u bazu
         if (rez.rowCount === 1) {
-            res.cookie('cookie', '123cookie123', {
+            res.cookie('cookie', '123cookie123', { //cookie koji će biti "ukraden"
                 secure: true,
                 sameSite: 'strict',
                 maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -30,16 +30,16 @@ app.post('/submitKomentar', async function (req, res) {
         res.status(500).send(error.message);
     }
 });
-app.post('/submitKomentarIsklj', [body('komentar').trim().escape()], async function (req : Request , res : Response) {   
+app.post('/submitKomentarIsklj', [body('komentar').trim().escape()], async function (req : Request , res : Response) {   //pohrana komentara - isključena ranjivost (dezinficiran unos)
     if(req.body.komentar.length > 255) return res.status(400).json({ error:('Predugačak komentar.')});
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     } 
     try {
-        const rez = await db.createKomentar(req.body.komentar);
+        const rez = await db.createKomentar(req.body.komentar); //pohrana komentara u bazu
         if (rez.rowCount === 1) {
-            res.cookie('cookie2', '123cookie123', {
+            res.cookie('cookie2', '123cookie123', { //cookie koji neće moći biti "ukraden" (dodatno i httpOnly)
                 secure: true,
                 httpOnly: true,
                 sameSite: 'strict',
@@ -51,20 +51,20 @@ app.post('/submitKomentarIsklj', [body('komentar').trim().escape()], async funct
         res.status(500).send(error.message);
     }
 });
-const createKey = (): string => {
+const createKey = (): string => {  //ključ za šifriranje
     const str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$%&/()=?^"!|[]{}*+-:.;,_@#<>';
     return str.split('').sort(() => Math.random() - 0.5).join('');
 };
-const key = createKey();
-app.post('/submitKarticaIsklj', async function (req, res) {    
+const key = createKey(); 
+app.post('/submitKarticaIsklj', async function (req, res) {    //pohrana broja kartice - uključena ranjivost (šifriran broj)
     try {
         if(req.body.kartica.length != 16) res.status(400).json({ error:('Broj kartice mora imati 16 znamenki.')});
         const sha256 = crypto.createHash('sha256');
-        sha256.update(key);
+        sha256.update(key);  //algoritam SHA-256 za hash ključa
         const iv = crypto.randomBytes(16);
         const cipher = crypto.createCipheriv(CIPHER_ALGORITHM, sha256.digest(), iv);
-        const ciphertext = Buffer.concat([cipher.update(Buffer.from(req.body.kartica)), cipher.final()]);
-        const rez = await db.createKartica(Buffer.concat([iv, ciphertext]).toString('base64'));
+        const ciphertext = Buffer.concat([cipher.update(Buffer.from(req.body.kartica)), cipher.final()]); //šifriran broj kartice aes-256-ctr algoritmom 
+        const rez = await db.createKartica(Buffer.concat([iv, ciphertext]).toString('base64')); //pohrana iv + šifriranog broja u bazu
         if (rez.rowCount === 1) {
             const sha256 = crypto.createHash('sha256');
             sha256.update(key);
@@ -81,10 +81,10 @@ app.post('/submitKarticaIsklj', async function (req, res) {
     }
 });
 
-app.post('/submitKartica', async function (req, res) {    
+app.post('/submitKartica', async function (req, res) {    //pohrana broja kartice - uključena ranjivost (broj se pohranjuje bez šifriranja)
     try {
         if(req.body.kartica.length != 16) res.status(400).json({ error:('Broj kartice mora imati 16 znamenki.')});
-        const rez = await db.createKartica(req.body.kartica);
+        const rez = await db.createKartica(req.body.kartica);  //pohrana broja u bazu
         if (rez.rowCount === 1) {
             res.status(200).send(rez.rows[0]);
         }
@@ -93,7 +93,7 @@ app.post('/submitKartica', async function (req, res) {
     }
 });
 
-app.get('/tablica', async function (req, res) {
+app.get('/tablica', async function (req, res) { //dohvat svih komentara
     try {
         const rez = await db.komentari();
         res.status(200).send(rez.rows);

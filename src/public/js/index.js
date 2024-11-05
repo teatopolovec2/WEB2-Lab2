@@ -2,7 +2,7 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
     event.preventDefault();
     const komentar = document.getElementById('inputField').value;
     const checkbox = document.getElementById('check1');
-    if (checkbox.checked) {
+    if (checkbox.checked) { //objava komentara, ranjivost uključena
         try {
             const response = await fetch('/submitKomentar', {
                 method: 'POST',
@@ -26,7 +26,7 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
         }
     } else {
         try {
-            const response = await fetch('/submitKomentarIsklj', {
+            const response = await fetch('/submitKomentarIsklj', { //objava komentara, ranjivost isključena
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ document.getElementById('karticaForm').addEventListener('submit', async function
     const checkbox = document.getElementById('check2');
     if (checkbox.checked) {
         try {
-            const response = await fetch('/submitKartica', {
+            const response = await fetch('/submitKartica', { //unos broja kartice, ranjivost uključena
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -76,7 +76,7 @@ document.getElementById('karticaForm').addEventListener('submit', async function
         }
     } else {
         try {
-            const response = await fetch('/submitKarticaIsklj', {
+            const response = await fetch('/submitKarticaIsklj', { //unos broja kartice, ranjivost uključena
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -21,7 +21,7 @@ class Database {
         })
     }
 
-    public async createTable() {
+    public async createTable() { //kreiranje tablica 'komentari' i 'kartice'
         try {
             const results = await this.pool.query(`
                 CREATE TABLE IF NOT EXISTS komentari (
@@ -60,7 +60,7 @@ class Database {
         }
     }
 
-    public async komentari() {
+    public async komentari() { //dohvat svih komentara
         try {
             const query = `SELECT * FROM komentari`;
             return await this.pool.query(query);
