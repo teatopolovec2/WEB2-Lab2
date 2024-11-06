@@ -18,11 +18,6 @@ app.post('/submitKomentar', async function (req, res) {    //pohrana komentara -
         if(req.body.komentar.length > 255) res.status(400).json({ error:('Predugačak komentar.')});
         const rez = await db.createKomentar(req.body.komentar); //pohrana komentara u bazu
         if (rez.rowCount === 1) {
-            res.cookie('cookie', '123cookie123', { //cookie koji će biti "ukraden"
-                secure: true,
-                sameSite: 'strict',
-                maxAge: 7 * 24 * 60 * 60 * 1000,
-              });
             res.status(200).send(rez.rows[0]);
         }
     } catch (error) {
@@ -109,6 +104,11 @@ app.post('/submitKartica', async function (req, res) {    //pohrana broja kartic
 app.get('/tablica', async function (req, res) { //dohvat svih komentara
     try {
         const rez = await db.komentari();
+        res.cookie('cookie', '123cookie123', { //cookie koji će biti "ukraden"
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+          });
         res.status(200).send(rez.rows);
     } catch (error) {
         res.status(500).send(error.message);
