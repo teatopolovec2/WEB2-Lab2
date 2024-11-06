@@ -1,11 +1,6 @@
 import { Pool, PoolClient } from 'pg';
 import dotenv from 'dotenv';
-dotenv.config()
-
-interface Komentar {
-    id: string;
-    tekst: string;
-}
+dotenv.config();
 
 class Database {
     public pool: Pool;

@@ -13,10 +13,9 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
             });
     
             if (response.ok) {
-                console.log('Komentar uspješno poslan');
-                const komentar = await response.json();
+                const komentar = await response.json(); 
                 document.getElementById('komentarForm').reset();
-                prikaziKomentar(komentar);
+                prikaziKomentar(komentar);//prikaz komentara na stranici
             } else {
                 const errorData = await response.json();
                 alert('Greška prilikom slanja komentara: ' + errorData.error);
@@ -35,10 +34,9 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
             });
     
             if (response.ok) {
-                console.log('Komentar uspješno poslan');
                 const komentar = await response.json();
                 document.getElementById('komentarForm').reset();
-                prikaziKomentar(komentar);
+                prikaziKomentar(komentar);//prikaz komentara na stranici
             } else {
                 const errorData = await response.json();
                 alert('Greška prilikom slanja komentara: ' + errorData.error);
@@ -66,7 +64,7 @@ document.getElementById('karticaForm').addEventListener('submit', async function
             if (response.ok) {
                 console.log('Broj kartice uspješno poslan');
                 const kart = await response.json();
-                prikaziKarticu(kart);
+                prikaziKarticu(kart); //prikaz zapisa spremljenog u bazu
             } else {
                 const errorData = await response.json();
                 alert('Greška prilikom slanja broja kartice: ' + errorData.error);
@@ -76,7 +74,7 @@ document.getElementById('karticaForm').addEventListener('submit', async function
         }
     } else {
         try {
-            const response = await fetch('/submitKarticaIsklj', { //unos broja kartice, ranjivost uključena
+            const response = await fetch('/submitKarticaIsklj', { //unos broja kartice, ranjivost isključena
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -87,7 +85,7 @@ document.getElementById('karticaForm').addEventListener('submit', async function
             if (response.ok) {
                 console.log('Broj kartice uspješno poslan');
                 const kart = await response.json();
-                prikaziKarticu(kart);
+                prikaziKarticu(kart); //prikaz zapisa spremljenog u bazu
             } else {
                 const errorData = await response.json();
                 alert('Greška prilikom slanja broja kartice: ' + errorData.error);
@@ -98,7 +96,7 @@ document.getElementById('karticaForm').addEventListener('submit', async function
     }
 });
 
-function prikaziKomentar(komentar) {
+function prikaziKomentar(komentar) { //prikaz novoobjavljenog komentara na stranici
     const tableBody = document.getElementById('tableBody1');
     const komentarRow = document.createElement('tr');
     komentarRow.innerHTML = `
@@ -109,7 +107,7 @@ function prikaziKomentar(komentar) {
     tableContainer.scrollTop = tableContainer.scrollHeight;
 }
 
-function prikaziKomentare(komentari) {
+function prikaziKomentare(komentari) { //prikaz svih komentara prilikom ucitavanja stranice
     const tableBody = document.getElementById('tableBody1');
     tableBody.innerHTML = '';
     komentari.forEach(komentar => {
@@ -121,7 +119,7 @@ function prikaziKomentare(komentari) {
     });
 }
 
-function prikaziKarticu(kartica) {
+function prikaziKarticu(kartica) {  //prikaz zapisa broja kartice spremljenog u bazu
     const div = document.getElementById('desifrirano');
     div.style.display='none';
     document.getElementById('vidljiv').style.display = 'block';
@@ -133,14 +131,14 @@ function prikaziKarticu(kartica) {
             <td>${kartica.brojkartice}</td>
         `;
     tableBody.appendChild(komentarRow);
-    if (kartica.desifrirano){
+    if (kartica.desifrirano){   //ako je dostupan prikazi i desifrirani zapis
         div.style.display = 'block';
         div.innerHTML = 'Dešifrirani zapis: ' + kartica.desifrirano
     }
 }
 
 window.onload = tablica;
-async function tablica() {
+async function tablica() {  //dohvat svih komentara dosad objavljenih
     try {
         const response = await fetch('/tablica');
         if (response.ok) {
