@@ -3,7 +3,6 @@ import path from 'path';
 import db from './database';
 import crypto from 'crypto';
 const CIPHER_ALGORITHM = 'aes-256-ctr';
-const { body, validationResult } = require('express-validator');
 
 const app = express();
 app.use(express.json());
@@ -30,14 +29,28 @@ app.post('/submitKomentar', async function (req, res) {    //pohrana komentara -
         res.status(500).send(error.message);
     }
 });
-app.post('/submitKomentarIsklj', [body('komentar').trim().escape()], async function (req : Request , res : Response) {   //pohrana komentara - isključena ranjivost (dezinficiran unos)
+app.post('/submitKomentarIsklj', async function (req : Request , res : Response) {   //pohrana komentara - isključena ranjivost (dezinficiran unos)
     if(req.body.komentar.length > 255) return res.status(400).json({ error:('Predugačak komentar.')});
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    } 
+    let komentar = req.body.komentar;
+    komentar = komentar.trim();
+    var sanitiziraj: { [key: string]: string };
+    komentar = komentar.replace(/[&<>"'`\\/{}]/g, (znak: string) => {
+        sanitiziraj = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+            '`': '&#96;',
+            '\\': '&#92;',
+            '/': '&#47;',
+            '{': '&#123;',
+            '}': '&#125;'
+        };
+        return sanitiziraj[znak];
+    });
     try {
-        const rez = await db.createKomentar(req.body.komentar); //pohrana komentara u bazu
+        const rez = await db.createKomentar(komentar); //pohrana komentara u bazu
         if (rez.rowCount === 1) {
             res.cookie('cookie2', '123cookie123', { //cookie koji neće moći biti "ukraden" (dodatno i httpOnly)
                 secure: true,
