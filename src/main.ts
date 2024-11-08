@@ -27,7 +27,6 @@ app.post('/submitKomentar', async function (req, res) {    //pohrana komentara -
     }
 });
 app.post('/submitKomentarIsklj', async function (req : Request , res : Response) {   //pohrana komentara - isključena ranjivost (dezinficiran unos)
-    if(req.body.komentar.length > 255) return res.status(400).json({ error:('Predugačak komentar.')});
     let komentar = req.body.komentar;
     komentar = komentar.trim();
     var sanitiziraj: { [key: string]: string }; //sanitizacija unosa
@@ -46,6 +45,7 @@ app.post('/submitKomentarIsklj', async function (req : Request , res : Response)
         };
         return sanitiziraj[znak];
     });
+    if(req.body.komentar.length > 255) return res.status(400).json({ error:('Predugačak komentar.')});
     try {
         const rez = await db.createKomentar(komentar); //pohrana komentara u bazu
         if (rez.rowCount === 1) {
