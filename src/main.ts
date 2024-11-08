@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import db from './database';
 import crypto from 'crypto';
+import dotenv from 'dotenv';
+dotenv.config()
 const CIPHER_ALGORITHM = 'aes-256-ctr';
 
 const app = express();
@@ -53,11 +55,7 @@ app.post('/submitKomentarIsklj', async function (req : Request , res : Response)
         res.status(500).send(error.message);
     }
 });
-const createKey = (): string => {  //ključ za šifriranje
-    const str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$%&/()=?^"!|[]{}*+-:.;,_@#<>';
-    return str.split('').sort(() => Math.random() - 0.5).join('');
-};
-const key = createKey(); 
+const key : string = process.env.KEY!;
 app.post('/submitKarticaIsklj', async function (req, res) {    //pohrana broja kartice - isključena ranjivost (šifriran broj)
     try {
         if(req.body.kartica.length != 16) res.status(400).json({ error:('Broj kartice mora imati 16 znamenki.')});
