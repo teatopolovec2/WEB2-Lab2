@@ -62,7 +62,6 @@ document.getElementById('karticaForm').addEventListener('submit', async function
             });
     
             if (response.ok) {
-                console.log('Broj kartice uspješno poslan');
                 const kart = await response.json();
                 prikaziKarticu(kart); //prikaz zapisa spremljenog u bazu
             } else {
@@ -83,7 +82,6 @@ document.getElementById('karticaForm').addEventListener('submit', async function
             });
     
             if (response.ok) {
-                console.log('Broj kartice uspješno poslan');
                 const kart = await response.json();
                 prikaziKarticu(kart); //prikaz zapisa spremljenog u bazu
             } else {
