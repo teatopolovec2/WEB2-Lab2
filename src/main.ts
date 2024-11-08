@@ -45,7 +45,7 @@ app.post('/submitKomentarIsklj', async function (req : Request , res : Response)
         };
         return sanitiziraj[znak];
     });
-    if(req.body.komentar.length > 255) return res.status(400).json({ error:('Predugačak komentar.')});
+    if(komentar.length > 255) return res.status(400).json({ error:('Predugačak komentar.')});
     try {
         const rez = await db.createKomentar(komentar); //pohrana komentara u bazu
         if (rez.rowCount === 1) {
