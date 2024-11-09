@@ -58,7 +58,7 @@ app.post('/submitKomentarIsklj', async function (req : Request , res : Response)
 const key : string = process.env.KEY!;
 app.post('/submitKarticaIsklj', async function (req, res) {    //pohrana broja kartice - isključena ranjivost (šifriran broj)
     try {
-        if(req.body.kartica.length != 16) res.status(400).json({ error:('Broj kartice mora imati 16 znamenki.')});
+        if(req.body.kartica.length != 16 || !/^\d{16}$/.test(req.body.kartica)) res.status(400).json({ error:('Broj kartice mora imati 16 znamenki.')});
         const sha256 = crypto.createHash('sha256');
         sha256.update(key);  //algoritam SHA-256 za hash ključa
         const iv = crypto.randomBytes(16);
@@ -83,7 +83,7 @@ app.post('/submitKarticaIsklj', async function (req, res) {    //pohrana broja k
 
 app.post('/submitKartica', async function (req, res) {    //pohrana broja kartice - uključena ranjivost (broj se pohranjuje bez šifriranja)
     try {
-        if(req.body.kartica.length != 16) res.status(400).json({ error:('Broj kartice mora imati 16 znamenki.')});
+        if(req.body.kartica.length != 16 || !/^\d{16}$/.test(req.body.kartica)) res.status(400).json({ error:('Broj kartice mora imati 16 znamenki.')});
         const rez = await db.createKartica(req.body.kartica);  //pohrana broja u bazu
         if (rez.rowCount === 1) {
             res.status(200).send(rez.rows[0]);
