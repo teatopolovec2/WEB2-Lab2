@@ -9,13 +9,13 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ komentar })
+                body: JSON.stringify({ komentar , s: 0}) //ne sanitiziraj
             });
     
             if (response.ok) {
                 const komentar = await response.json(); 
                 document.getElementById('komentarForm').reset();
-                prikaziKomentar(komentar);//prikaz komentara na stranici
+                prikaziKomentar(komentar.tekst);//prikaz komentara na stranici
             } else {
                 const errorData = await response.json();
                 alert('Greška prilikom slanja komentara: ' + errorData.error);
@@ -25,17 +25,36 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
         }
     } else {
         try {
-            const response = await fetch('/submitKomentarIsklj', { //objava komentara, ranjivost isključena
+            const response = await fetch('/submitKomentar', { //objava komentara, ranjivost isključena
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ komentar })
+                body: JSON.stringify({ komentar , s: 1}) //treba sanitizirat
             });
     
             if (response.ok) {
                 const komentar = await response.json();
                 document.getElementById('komentarForm').reset();
+                let komentar = await response.json();
+                document.getElementById('komentarForm').reset();
+                komentar = komentar.tekst.trim(); //sanitizacija unosa
+                var sanitiziraj;
+                komentar = komentar.replace(/[&<>"'`\\/{}]/g, (znak) => {
+                    sanitiziraj = {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#39;',
+                        '`': '&#96;',
+                        '\\': '&#92;',
+                        '/': '&#47;',
+                        '{': '&#123;',
+                        '}': '&#125;'
+                    };
+                    return sanitiziraj[znak];
+                });
                 prikaziKomentar(komentar);//prikaz komentara na stranici
             } else {
                 const errorData = await response.json();
@@ -98,7 +117,7 @@ function prikaziKomentar(komentar) { //prikaz novoobjavljenog komentara na stran
     const tableBody = document.getElementById('tableBody1');
     const komentarRow = document.createElement('tr');
     komentarRow.innerHTML = `
-            <td>${komentar.tekst}</td>
+            <td>${komentar}</td>
         `;
     tableBody.appendChild(komentarRow);
     const tableContainer = document.querySelector('.table-container');
@@ -110,8 +129,28 @@ function prikaziKomentare(komentari) { //prikaz svih komentara prilikom ucitavan
     tableBody.innerHTML = '';
     komentari.forEach(komentar => {
         const komentarRow = document.createElement('tr');
+        tekst = komentar.tekst
+        if (komentar.s == '1'){ //ako je za komentar bila isključena ranjivost, sanitiziraj
+            tekst = tekst.trim(); //sanitizacija unosa
+            var sanitiziraj;
+            tekst = tekst.replace(/[&<>"'`\\/{}]/g, (znak) => {
+                sanitiziraj = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    '`': '&#96;',
+                    '\\': '&#92;',
+                    '/': '&#47;',
+                    '{': '&#123;',
+                    '}': '&#125;'
+                };
+                return sanitiziraj[znak];
+            });
+        }
         komentarRow.innerHTML = `
-            <td>${komentar.tekst}</td>
+            <td>${tekst}</td>
         `;
         tableBody.appendChild(komentarRow);
     });
