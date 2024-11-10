@@ -25,7 +25,7 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
         }
     } else {
         try {
-            const response = await fetch('/submitKomentar', { //objava komentara, ranjivost isključena
+            const response = await fetch('/submitKomentarIsklj', { //objava komentara, ranjivost isključena
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
