@@ -21,7 +21,8 @@ class Database {
             const results = await this.pool.query(`
                 CREATE TABLE IF NOT EXISTS komentari (
                     id SERIAL PRIMARY KEY,
-                    tekst VARCHAR(255) NOT NULL
+                    tekst VARCHAR(255) NOT NULL,
+                    s VARCHAR(1) NOT NULL
                 );
                 CREATE TABLE IF NOT EXISTS kartice (
                     id SERIAL PRIMARY KEY,
@@ -35,10 +36,10 @@ class Database {
         }
     }
 
-    public async createKomentar(tekst : string) {
+    public async createKomentar(tekst : string, s : string) {
         try {
-            const query = `INSERT INTO komentari (tekst) VALUES ($1) RETURNING *`;
-            return await this.pool.query(query, [tekst]);
+            const query = `INSERT INTO komentari (tekst, s) VALUES ($1, $2) RETURNING *`;
+            return await this.pool.query(query, [tekst, s]);
         } catch (err) {
             console.error('Greška prilikom kreiranja komentara.', err);
             throw err;
