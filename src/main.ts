@@ -18,7 +18,7 @@ app.get('/',  function (req, res) {
 app.post('/submitKomentar', async function (req, res) {    //pohrana komentara - uključena ranjivost (unos se ne provjerava)
     try {
         if(req.body.komentar.length > 255) res.status(400).json({ error:('Predugačak komentar.')});
-        const rez = await db.createKomentar(req.body.komentar); //pohrana komentara u bazu
+        const rez = await db.createKomentar(req.body.komentar, req.body.s); //pohrana komentara u bazu
         if (rez.rowCount === 1) {
             res.status(200).send(rez.rows[0]);
         }
@@ -26,35 +26,7 @@ app.post('/submitKomentar', async function (req, res) {    //pohrana komentara -
         res.status(500).send(error.message);
     }
 });
-app.post('/submitKomentarIsklj', async function (req : Request , res : Response) {   //pohrana komentara - isključena ranjivost (dezinficiran unos)
-    let komentar = req.body.komentar;
-    komentar = komentar.trim();
-    var sanitiziraj: { [key: string]: string }; //sanitizacija unosa
-    komentar = komentar.replace(/[&<>"'`\\/{}]/g, (znak: string) => {
-        sanitiziraj = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;',
-            '`': '&#96;',
-            '\\': '&#92;',
-            '/': '&#47;',
-            '{': '&#123;',
-            '}': '&#125;'
-        };
-        return sanitiziraj[znak];
-    });
-    if(komentar.length > 255) return res.status(400).json({ error:('Predugačak komentar.')});
-    try {
-        const rez = await db.createKomentar(komentar); //pohrana komentara u bazu
-        if (rez.rowCount === 1) {
-            res.status(200).send(rez.rows[0]);
-        }
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-});
+
 const key : string = process.env.KEY!;
 app.post('/submitKarticaIsklj', async function (req, res) {    //pohrana broja kartice - isključena ranjivost (šifriran broj)
     try {
