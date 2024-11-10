@@ -34,8 +34,6 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
             });
     
             if (response.ok) {
-                const komentar = await response.json();
-                document.getElementById('komentarForm').reset();
                 let komentar = await response.json();
                 document.getElementById('komentarForm').reset();
                 komentar = komentar.tekst.trim(); //sanitizacija unosa
