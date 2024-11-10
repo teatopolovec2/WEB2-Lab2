@@ -25,12 +25,13 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
         }
     } else {
         try {
-            const response = await fetch('/submitKomentarIsklj', { //objava komentara, ranjivost isključena
+            const response = await fetch('/submitKomentar', { //objava komentara, ranjivost isključena
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ komentar})
+
             });
     
             if (response.ok) {
@@ -110,8 +111,9 @@ function prikaziKomentare(komentari) { //prikaz svih komentara prilikom ucitavan
     tableBody.innerHTML = '';
     komentari.forEach(komentar => {
         const komentarRow = document.createElement('tr');
+        tekst = komentar.tekst
         komentarRow.innerHTML = `
-            <td>${komentar.tekst}</td>
+            <td>${tekst}</td>
         `;
         tableBody.appendChild(komentarRow);
     });
