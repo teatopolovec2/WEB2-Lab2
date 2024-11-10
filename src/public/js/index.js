@@ -9,7 +9,7 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ komentar })
+                body: JSON.stringify({ komentar})
             });
     
             if (response.ok) {
@@ -30,11 +30,11 @@ document.getElementById('komentarForm').addEventListener('submit', async functio
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ komentar })
+                body: JSON.stringify({ komentar})
             });
     
             if (response.ok) {
-                const komentar = await response.json();
+                let komentar = await response.json();
                 document.getElementById('komentarForm').reset();
                 prikaziKomentar(komentar);//prikaz komentara na stranici
             } else {

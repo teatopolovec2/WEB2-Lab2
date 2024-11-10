@@ -26,6 +26,7 @@ app.post('/submitKomentar', async function (req, res) {    //pohrana komentara -
         res.status(500).send(error.message);
     }
 });
+
 app.post('/submitKomentarIsklj', async function (req : Request , res : Response) {   //pohrana komentara - isključena ranjivost (dezinficiran unos)
     let komentar = req.body.komentar;
     komentar = komentar.trim();
@@ -55,6 +56,7 @@ app.post('/submitKomentarIsklj', async function (req : Request , res : Response)
         res.status(500).send(error.message);
     }
 });
+
 const key : string = process.env.KEY!;
 app.post('/submitKarticaIsklj', async function (req, res) {    //pohrana broja kartice - isključena ranjivost (šifriran broj)
     try {
