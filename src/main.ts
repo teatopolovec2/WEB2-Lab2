@@ -15,7 +15,7 @@ app.set('view engine', 'pug');
 app.get('/',  function (req, res) {
     res.render('index');
 });
-app.post('/submitKomentar', async function (req, res) {    //pohrana komentara - uključena ranjivost (unos se ne provjerava)
+app.post('/submitKomentar', async function (req, res) {    //pohrana komentara
     try {
         if(req.body.komentar.length > 255) res.status(400).json({ error:('Predugačak komentar.')});
         const rez = await db.createKomentar(req.body.komentar, req.body.s); //pohrana komentara u bazu
